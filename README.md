@@ -7,5 +7,8 @@ It was coded as part of TC1031.1 class.
 * Bubble Sort Algorithm Implementation.
 * Structured paradigm.
 
-## Screenshots 📷
-![alt text](https://1drv.ms/u/s!AtQtYJu3wF8DkZsJOfl6a8OJWxyJDw?e=pgWAOh)
+## Some cool screenshots!! 📷
+![alt text](https://i.ibb.co/yBqZDsK/screen1.png)
+![alt text](https://i.ibb.co/rmwj9tw/screen2.png)
+![alt text](https://i.ibb.co/WcX5WHD/screen3.png)
+![alt text](https://i.ibb.co/smDdMST/screen4.png)
