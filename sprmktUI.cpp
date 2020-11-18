@@ -20,12 +20,12 @@ class SprmktUI{
             printf("Indica la opci%cn : ",162); op=getche(); printf("\n");
             printf("---------------------------------------------------\n");
             switch(op){
-                case 'a':printf("aaaaaa"); getche(); break;
+                case 'a': printf("aaaaaa"); getche(); break;
                 //case 'b':muestra(); break;
                 //case 'c':promedio(1); break;
                 
             }
-        }while(op!='x');        
+        }while(op !='x');        
     }
 
     void menuES(){
@@ -41,9 +41,9 @@ class SprmktUI{
             printf("d) Salidas por devolucion a provedores\n");
             printf("e) Salidas por mermas\n");
             printf("x) Terminar\n");
-            printf("---------------------------------------------------\n");
+            printf("-----------------------------------------------------------\n");
             printf("Indica la opci%cn : ",162); op=getche(); printf("\n");
-            printf("---------------------------------------------------\n");
+            printf("-----------------------------------------------------------\n");
             switch(op){
                 case 'a':printf("aaaaaa"); getche(); break;
                 //case 'b':muestra(); break;
@@ -85,12 +85,12 @@ class SprmktUI{
         
         do{
             printf("---------------------------------------------------\n");
-            printf("-------------------MENU PRINCIPAL-------------------\n");
+            printf("-------------------MENU PRINCIPAL------------------\n");
             printf("---------------------------------------------------\n");
-            printf("1) Archivos Productos\n");
-            printf("2) Entradas/Salidas de Producto\n");
-            printf("3) Reportes\n");
-            printf("4) terminar\n");
+            printf("a) Archivos Productos\n");
+            printf("b) Entradas/Salidas de Producto\n");
+            printf("c) Reportes\n");
+            printf("x) terminar\n");
             printf("---------------------------------------------------\n");
             printf("Indica la opci%cn : ",162); op=getche(); printf("\n");
             printf("---------------------------------------------------\n");
