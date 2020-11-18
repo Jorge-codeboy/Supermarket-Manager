@@ -74,7 +74,7 @@ class sprmkt {
                 printf("d) Consulta productos por familia\n");
                 printf("x) Terminar\n");
                 printf("---------------------------------------------------\n");
-                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin);   printf("\n");
+                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin);  
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
@@ -102,7 +102,7 @@ class sprmkt {
                 printf("e) Salidas por mermas\n");
                 printf("x) Terminar\n");
                 printf("-----------------------------------------------------------\n");
-                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin); printf("\n");
+                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin);
                 printf("-----------------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
@@ -130,7 +130,7 @@ class sprmkt {
                 printf("f) Listado de movimientos de un producto por fecha\n");
                 printf("x) Terminar\n");
                 printf("---------------------------------------------------\n");
-                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin); printf("\n");
+                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin);
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
@@ -157,7 +157,7 @@ class sprmkt {
                 printf("c) Reportes\n");
                 printf("x) Terminar\n");
                 printf("---------------------------------------------------\n");
-                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin); printf("\n");
+                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin);
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op) {
