@@ -40,7 +40,7 @@ class SprmktUI{
             printf("c) Salidas por ventas\n");
             printf("d) Salidas por devolucion a provedores\n");
             printf("e) Salidas por mermas\n");
-            printf("x) terminar\n");
+            printf("x) Terminar\n");
             printf("---------------------------------------------------\n");
             printf("Indica la opci%cn : ",162); op=getche(); printf("\n");
             printf("---------------------------------------------------\n");
@@ -57,16 +57,16 @@ class SprmktUI{
         char op;
         
         do{
-            printf("---------------------------------------\n");
-            printf("--------------MENU REPORTES------------\n");
-            printf("---------------------------------------\n");
+            printf("---------------------------------------------------\n");
+            printf("--------------MENU REPORTES------------------------\n");
+            printf("---------------------------------------------------\n");
             printf("a) General de productos ordenado por clave\n");
             printf("b) General de productos ordenado por nombre\n");
             printf("c) Productos por familia\n");
             printf("d) Productos a ordenar por existencia\n");
             printf("e) Productos a ofertar por existencia\n");
             printf("f) Listado de movimientos de un producto por fecha\n");
-            printf("x) terminar\n");
+            printf("x) Terminar\n");
             printf("---------------------------------------------------\n");
             printf("Indica la opci%cn : ",162); op=getche(); printf("\n");
             printf("---------------------------------------------------\n");
