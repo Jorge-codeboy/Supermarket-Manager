@@ -4,6 +4,8 @@
 #include <ctype.h> // tolower()
 #include <fstream>
 
+using namespace std;
+
 ///////////////////////// Estructura productos.txt
 /*
 |  FIELD             |  TYPE  |   SIZE  |  NAME  |
@@ -31,17 +33,6 @@
 | Sub-tipo de Mov.   | char   | 1       | stipo  |
 */
 
-
-///////////////////////////////// Global Variables
-char falso[2];
-/////////////////////// Productos
-int cveP, pu, ei, ea, smin, smax;
-char nom[21], fam[21], um[21];
-///////////////////// Movimientos
-int cveM, cantidad;
-char fecha[11], tipo[2], stipo[2];
-
-
 //////////////////////////////// Nodo de Productos
 struct NodoP {
     NodoP *prevP, *nextP;
@@ -53,9 +44,24 @@ struct NodoP {
 ////////////////////////////// Nodo de Movimientos
 struct NodoM {
     NodoM *prevM, *nextM;
-    int cveM, cantidad;
+    int cveM, cant;
     char fecha[11], tipo[2], stipo[2];
 };
+
+
+///////////////////////////////// Global Variables
+char falso[2];
+/////////////////////// Productos
+int cveP, pu, ei, ea, smin, smax;
+char nom[21], fam[21], um[21];
+///////////////////// Movimientos
+int cveM, cant;
+char fecha[11], tipo[2], stipo[2];
+///////////////////// Apuntadores
+NodoP *nwP, *headP, *tailP;
+NodoM *nwM, *headM, *tailM;
+
+
 
 
 class sprmkt {
@@ -78,7 +84,7 @@ class sprmkt {
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
-                    case 'a': printf("aaaaaa"); getchar(); break;
+                    case 'a': alta_productos(); getchar(); break;
                     //case 'b':muestra(); break;
                     //case 'c':promedio(1); break;
                     case 'x': menuP(); break;
@@ -145,6 +151,8 @@ class sprmkt {
 
         void menuP(){
             
+            carga_archivos();
+
             char op;
             
             do{
@@ -170,9 +178,80 @@ class sprmkt {
             } while(op!='x');
 
         }
+
+        void carga_archivos() {
+            ifstream archP;
+            archP.open("productos.txt", ios::in);
+
+            while (archP >> cveP >> nom >> fam >> um >> pu >> ei >> ea >> smin >> smax) {
+                nwP = new NodoP;
+                nwP->cveP = cveP;
+                strcpy(nwP->nom, nom);
+                strcpy(nwP->fam, fam);
+                strcpy(nwP->um, um);
+                nwP->pu = pu;
+                nwP->ei = ei;
+                nwP->ea = ea;
+                nwP->smin = smin;
+                nwP->smax = smax;
+                
+                nwP->nextP = NULL;
+                nwP->prevP = NULL;
+
+                if (headP == NULL) {
+                    headP = nwP;
+                    tailP = nwP;
+                }
+                else {
+                    tailP -> nextP = nwP;
+                    nwP -> prevP = tailP;
+                    tailP = nwP;
+                }
+            }
+            ifstream archM;
+            archP.open("movimientos.txt", ios::in);
+
+            while (archM >> cveM >> fecha >> cant >> tipo >> stipo) {
+                nwM = new NodoM;
+                nwM->cveM = cveM;
+                strcpy(nwM->fecha, fecha);
+                nwM->cant = cant;
+                strcpy(nwM->tipo, tipo);
+                strcpy(nwM->stipo, stipo);
+                
+                nwM->nextM = NULL;
+                nwM->prevM = NULL;
+
+                if (headM == NULL) {
+                    headM = nwM;
+                    tailM = nwM;
+                }
+                else {
+                    tailM -> nextM = nwM;
+                    nwM -> prevM = tailM;
+                    tailM = nwM;
+                }
+            }
+        }
+
+        void alta_productos() {}
+        
+        void busca_producto() {}
+
 };
 
 int main() {
+
+////////////////////////// Opens and closes files   
+    ofstream archP;
+    archP.open("productos.txt", ios::app);
+    archP.close();
+
+    ofstream archM;
+    archM.open("movimientos.txt", ios::app);
+    archM.close();
+
+///////////////////////////// Starts the program  
     sprmkt start;
     start.menuP();
     return 0;
