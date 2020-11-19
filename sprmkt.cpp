@@ -58,10 +58,15 @@ char nom[21], fam[21], um[21];
 int cveM, cant;
 char fecha[11], tipo[2], stipo[2];
 ///////////////////// Apuntadores
-NodoP *nwP, *headP, *tailP;
-NodoM *nwM, *headM, *tailM;
+NodoP *nwP, *headP, *tailP, *currentP;
+NodoM *nwM, *headM, *tailM, *currentM;
 
-
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++ TO DO +++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// descarga_productos()
+// descarga_movimientos()
+// baja_productos()
 
 
 class sprmkt {
@@ -80,7 +85,7 @@ class sprmkt {
                 printf("d) Consulta productos por familia\n");
                 printf("x) Terminar\n");
                 printf("---------------------------------------------------\n");
-                printf("Indica la opci%cn : ",162); op=getchar(); fflush(stdin);  
+                printf("Indica la opci%cn : ", 162); op = getchar(); fflush(stdin);  
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
@@ -234,9 +239,38 @@ class sprmkt {
             }
         }
 
-        void alta_productos() {}
+
+        void descarga_productos() {
+        }
+
+        void descarga_movimientos() {
+
+        }
+        void alta_productos() {
+
+            if (!busca_producto()) {
+                prin
+            }
+
+
+
+
+        }
         
-        void busca_producto() {}
+        bool busca_producto() {
+            // Searches for cveP in linked list, returns a bool depending on the search
+
+            printf("Indica la clave del producto ->"); scanf("%d", &cveP); gets(falso);
+
+            currentP = tailP;
+
+            while (currentP != NULL) {
+
+                if (cveP == currentP->cveP) return true;
+                currentP = currentP -> prevP;
+            }
+            return false;
+        }
 
 };
 
