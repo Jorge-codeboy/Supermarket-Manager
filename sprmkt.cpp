@@ -51,6 +51,7 @@ struct NodoM {
 
 ///////////////////////////////// Global Variables
 char falso[2];
+bool flag;
 /////////////////////// Productos
 int cveP, pu, ei, ea, smin, smax;
 char nom[21], fam[21], um[21];
@@ -248,18 +249,142 @@ class sprmkt {
         }
         void alta_productos() {
 
-            if (!busca_producto()) {
-                show_error( (char *) "La clave del producto se duplica en la base de datos.");
+
+            // cveP validation!
+            flag = true;
+
+            while (flag) {
+                
+                if (!busca_producto()) show_error( (char *) "La clave del producto se duplica en la base de datos.");
+    
+                else if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
+
+                else flag = false;
             }
 
+            // nombre validation!
+            flag = true;
 
+            while (flag) {
+                
+                printf("Indica Nombre del producto -> "); gets(nom);
+                int l = strlen(nom);
+                
+                if ((l < 1) || (l > 20)) show_error( (char *) "El Nombre debe tener entre 1 y 20 caracteres.");
 
+                else flag = false;
+            }
+
+            // fam validation!
+            flag = true;
+
+            while (flag) {
+                
+                printf("Indica Familia del producto -> "); gets(fam);
+                int l = strlen(fam);
+                
+                if ((l < 1) || (l > 20)) show_error( (char *) "La Familia debe tener entre 1 y 20 caracteres.");
+
+                else flag = false;
+            }
+
+            // um validation!
+            flag = true;
+
+            while (flag) {
+                
+                printf("Indica Unidad de Medida del producto -> "); gets(um);
+                int l = strlen(um);
+                
+                if ((l < 1) || (l > 20)) show_error( (char *) "El Unidad de Medida debe tener entre 1 y 20 caracteres.");
+
+                else flag = false;
+            }
+
+            // pu validation!
+            flag = true;
+
+            while (flag) {
+
+                printf("Indica el Precio Unitario del producto ->"); scanf("%d", &pu); gets(falso);
+                if ((pu < 1) || (pu > 999999)) show_error( (char *) "El Precio Unitario es mayor a 999,999 o menor a 1.");
+
+                else flag = false;
+            }
+
+            
+            // ei validation!
+            flag = true;
+
+            while (flag) {
+                
+                printf("Indica la Existencia Inicial del producto ->"); scanf("%d", &ei); gets(falso);
+
+                if ((ei < 1) || (ei > 999999)) show_error( (char *) "La Existencia Inicial es mayor a 999,999 o menor a 1.");
+
+                else flag = false;
+            }
+
+            // ea
+
+            ea = ei;
+            
+            // smin validation!
+            flag = true;
+
+            while (flag) {
+                
+                printf("Indica el Stock M%cnimo del producto ->", 161); scanf("%d", &smin); gets(falso);
+
+                if ((smin < 1) || (smin > 999999)) show_error( (char *) "El Stock Min. es mayor a 999,999 o menor a 1.");
+
+                else flag = false;
+            }
+
+            // smax validation!
+            flag = true;
+
+            while (flag) {
+                
+                printf("Indica el Stock M%cximo del producto ->", 160); scanf("%d", &smax); gets(falso);
+
+                if ((smax < 1) || (smax > 999999)) show_error( (char *) "El Stock Max. es mayor a 999,999 o menor a 1.");
+
+                else flag = false;
+            }
+            //// Pointers 
+            nwP = new NodoP;
+            nwP -> nextP = NULL;
+            tailP -> nextP = nwP;
+            nwP -> prevP = tailP;
+
+            //// INT Atributtes
+            nwP -> cveP = cveP;
+            nwP -> pu = pu;
+            nwP -> ei = ei;
+            nwP -> ea = ea;
+            nwP -> smin = smin;
+            nwP -> smax = smax;
+            
+            //// STR Atributtes
+            strcpy(nwP -> nom, nom);
+            strcpy(nwP -> fam, fam);
+            strcpy(nwP -> um, um);
+             
+            tailP = nwP;
+
+            descarga_productos();
+            descarga_movimientos();
 
         }
         
         void show_error(char *mssg) {
+            printf("\n");
             printf("[ERROR] ");
             printf(mssg);
+            printf("[ENTER] para continuar ...");
+            printf("\n");
+            getchar(); fflush(stdin);
         }
 
         bool busca_producto() {
