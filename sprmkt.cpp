@@ -249,7 +249,7 @@ class sprmkt {
         void alta_productos() {
 
             if (!busca_producto()) {
-                prin
+                show_error( (char *) "La clave del producto se duplica en la base de datos.");
             }
 
 
@@ -257,6 +257,11 @@ class sprmkt {
 
         }
         
+        void show_error(char *mssg) {
+            printf("[ERROR] ");
+            printf(mssg);
+        }
+
         bool busca_producto() {
             // Searches for cveP in linked list, returns a bool depending on the search
 
