@@ -3,6 +3,7 @@
 #include <String.h>
 #include <ctype.h> // tolower()
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -73,6 +74,8 @@ NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 class sprmkt {
     public:
         void menuArchivosP() {
+            carga_archivos();
+
             char op;
             
             do{
@@ -100,6 +103,9 @@ class sprmkt {
         }
 
         void menuES(){
+
+            carga_archivos();
+
             char op;
             
             do{
@@ -127,6 +133,8 @@ class sprmkt {
         }    
 
         void menuReportes(){
+            carga_archivos();
+
             char op;
             
             do{
@@ -242,9 +250,21 @@ class sprmkt {
 
 
         void descarga_productos() {
-            currentP = headP;
+            
             ofstream archP;
             archP.open("productos.txt", ios::out);
+
+            // Date definition!
+            time_t rawtime;
+            struct tm * timeinfo;
+            time (&rawtime);
+            timeinfo = localtime (&rawtime);
+
+            strftime(fecha, 10, "%D%T", timeinfo);
+            puts(fecha);
+
+            currentP = headP;
+
             while(currentP != NULL){
 
                 for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == ' ') currentP->nom[i] ='_';
@@ -262,9 +282,17 @@ class sprmkt {
             currentM = headM;
             ofstream archM;
             archM.open("movimientos.txt", ios::out);
+
+            // Date definition!
+            time_t now = time(0);
+            char *localt = ctime(&now);
+            strcpy(fecha,localt);
+            printf("%s\n", fecha);
+
             while(currentM != NULL){
                 for(int i=0;i<(strlen(currentM->tipo));i++) if (currentM->tipo[i] == ' ') currentM->tipo[i] ='_';
                 for(int i=0;i<(strlen(currentM->stipo));i++) if (currentM->stipo[i] == ' ') currentM->stipo[i] ='_';
+                for(int i=0;i<(strlen(currentM->fecha));i++) if (currentM->fecha[i] == ' ') currentM->fecha[i] ='_';
                 archM << currentM->cveM <<" "<<currentM->fecha<<" "<<currentM->cant<<" "<<currentM->tipo<<" "<<currentM->stipo<<"\n";
                 currentM = currentM->nextM; 
 
@@ -330,7 +358,7 @@ class sprmkt {
 
             while (flag) {
 
-                printf("Indica el Precio Unitario del producto ->"); scanf("%d", &pu); gets(falso);
+                printf("Indica el Precio Unitario del producto -> "); scanf("%d", &pu); gets(falso);
                 if ((pu < 1) || (pu > 999999)) show_error( (char *) "El Precio Unitario es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
@@ -342,7 +370,7 @@ class sprmkt {
 
             while (flag) {
                 
-                printf("Indica la Existencia Inicial del producto ->"); scanf("%d", &ei); gets(falso);
+                printf("Indica la Existencia Inicial del producto -> "); scanf("%d", &ei); gets(falso);
 
                 if ((ei < 1) || (ei > 999999)) show_error( (char *) "La Existencia Inicial es mayor a 999,999 o menor a 1.");
 
@@ -358,7 +386,7 @@ class sprmkt {
 
             while (flag) {
                 
-                printf("Indica el Stock M%cnimo del producto ->", 161); scanf("%d", &smin); gets(falso);
+                printf("Indica el Stock M%cnimo del producto -> ", 161); scanf("%d", &smin); gets(falso);
 
                 if ((smin < 1) || (smin > 999999)) show_error( (char *) "El Stock Min. es mayor a 999,999 o menor a 1.");
 
@@ -370,7 +398,7 @@ class sprmkt {
 
             while (flag) {
                 
-                printf("Indica el Stock M%cximo del producto ->", 160); scanf("%d", &smax); gets(falso);
+                printf("Indica el Stock M%cximo del producto -> ", 160); scanf("%d", &smax); gets(falso);
 
                 if ((smax < 1) || (smax > 999999)) show_error( (char *) "El Stock Max. es mayor a 999,999 o menor a 1.");
 
@@ -497,15 +525,21 @@ class sprmkt {
         bool busca_producto() {
             // Searches for cveP in linked list, returns a bool depending on the search
 
-            printf("Indica la clave del producto ->"); scanf("%d", &cveP); gets(falso);
+            if (headP == NULL) {
+                show_error("LISTA EMPTY [ENTER]\n");
+            }
+            else {
+
+                printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
 
 
-            currentP = tailP;
+                currentP = headP;
 
-            while (currentP != NULL) {
+                while (currentP != NULL) {
 
-                if (cveP == currentP->cveP) return true;
-                currentP = currentP -> prevP;
+                    if (cveP == currentP->cveP) return true;
+                    currentP = currentP -> nextP;
+                }
             }
             return false;
         }
