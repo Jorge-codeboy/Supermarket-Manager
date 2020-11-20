@@ -244,7 +244,7 @@ class sprmkt {
         void descarga_productos() {
             currentP = headP;
             ofstream archP;
-            archP.open("productos.txt", ios::app);
+            archP.open("productos.txt", ios::out);
             while(currentP != NULL){
 
                 for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == ' ') currentP->nom[i] ='_';
@@ -261,10 +261,10 @@ class sprmkt {
         void descarga_movimientos() {
             currentM = headM;
             ofstream archM;
-            archM.open("movimientos.txt", ios::app);
+            archM.open("movimientos.txt", ios::out);
             while(currentM != NULL){
-                for(int i=0;i<(strlen(currentM->tipo));i++) if (currentM->tipo[i] == ' ') currentM->nom[i] ='_';
-                for(int i=0;i<(strlen(currentM->fam));i++) if (currentM->fam[i] == ' ') currentM->fam[i] ='_';
+                for(int i=0;i<(strlen(currentM->tipo));i++) if (currentM->tipo[i] == ' ') currentM->tipo[i] ='_';
+                for(int i=0;i<(strlen(currentM->stipo));i++) if (currentM->stipo[i] == ' ') currentM->stipo[i] ='_';
                 archM << currentM->cveM <<" "<<currentM->fecha<<" "<<currentM->cant<<" "<<currentM->tipo<<" "<<currentM->stipo<<"\n";
                 currentM = currentM->nextM; 
 
