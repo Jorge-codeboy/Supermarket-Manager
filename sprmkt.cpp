@@ -90,7 +90,7 @@ class sprmkt {
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
-                    case 'a': alta_productos(); getchar(); break;
+                    case 'a': alta_productos(); break;
                     //case 'b':muestra(); break;
                     //case 'c':promedio(1); break;
                     case 'x': menuP(); break;
@@ -242,31 +242,34 @@ class sprmkt {
 
 
         void descarga_productos() {
-            currentP= headP;
-            ofstream archp;
+            currentP = headP;
+            ofstream archP;
+            archP.open("productos.txt", ios::app);
             while(currentP != NULL){
 
                 for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == ' ') currentP->nom[i] ='_';
                 for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == ' ') currentP->fam[i] ='_';
                 for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == ' ') currentP->um[i] ='_';
-                archp <<currentP->cveP<<" "<<currentP->nom<<" "<<currentP->fam<<" "<<currentP->um<<" "<<currentP->pu<<" "<<currentP->ei<<" "<<currentP->ea<<" "<<currentP->smin<<" "<<currentP->smax<<"\n";
+                archP << currentP->cveP <<" "<< currentP->nom << " " << currentP->fam << " " <<currentP->um << " "<<currentP->pu<<" "<<currentP->ei<<" "<<currentP->ea<<" "<<currentP->smin<<" "<<currentP->smax<<"\n";
                 currentP = currentP->nextP; 
 
             }
-            archp.close();
+            archP.close();
 
         }
 
         void descarga_movimientos() {
-            currentM= headM;
-            ofstream archm;
+            currentM = headM;
+            ofstream archM;
+            archM.open("movimientos.txt", ios::app);
             while(currentM != NULL){
-
-                archm <<currentM->cveM<<" "<<currentM->fecha<<" "<<currentM->cant<<" "<<currentM->tipo<<" "<<currentM->stipo<<"\n";
+                for(int i=0;i<(strlen(currentM->tipo));i++) if (currentM->tipo[i] == ' ') currentM->nom[i] ='_';
+                for(int i=0;i<(strlen(currentM->fam));i++) if (currentM->fam[i] == ' ') currentM->fam[i] ='_';
+                archM << currentM->cveM <<" "<<currentM->fecha<<" "<<currentM->cant<<" "<<currentM->tipo<<" "<<currentM->stipo<<"\n";
                 currentM = currentM->nextM; 
 
             }
-            archm.close();
+            archM.close();
         }
         void alta_productos() {
 
@@ -374,13 +377,9 @@ class sprmkt {
                 else flag = false;
                 
             }
-            printf("pass 1"); //pasa este
-            //// Pointers 
+
+
             nwP = new NodoP;
-            nwP -> nextP = NULL;
-            tailP -> nextP = nwP;
-            nwP -> prevP = tailP;
-            printf("pass 2"); //no llega a este
 
             //// INT Atributtes
             nwP -> cveP = cveP;
@@ -394,11 +393,28 @@ class sprmkt {
             strcpy(nwP -> nom, nom);
             strcpy(nwP -> fam, fam);
             strcpy(nwP -> um, um);
-             
-            tailP = nwP;
+            
+            //// Pointers 
+            
+            // Case 1: List is empty
+            if ((headP == NULL) || (tailP == NULL)) {
+                headP = nwP;
+                tailP = nwP;
+                headP -> nextP = NULL;
+                headP -> prevP = NULL;
+                tailP -> nextP = NULL;
+                tailP -> prevP = NULL;
+            }
+            
+            // Case 2: List is NOT empty
+            else {
+                tailP -> nextP = nwP;
+                nwP -> prevP = tailP;
+                tailP = nwP;
+            }
 
-            //descarga_productos();
-            //descarga_movimientos();
+            descarga_productos();
+            descarga_movimientos();
             
         }
 
@@ -482,6 +498,7 @@ class sprmkt {
             // Searches for cveP in linked list, returns a bool depending on the search
 
             printf("Indica la clave del producto ->"); scanf("%d", &cveP); gets(falso);
+
 
             currentP = tailP;
 
