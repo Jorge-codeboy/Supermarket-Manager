@@ -60,14 +60,14 @@ int cveM, cant;
 char fecha[11], tipo[2], stipo[2];
 ///////////////////// Apuntadores
 NodoP *nwP, *headP, *tailP, *currentP;
-NodoM *nwM, *headM, *tailM, *currentM;
+NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++ TO DO +++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// descarga_productos()
-// descarga_movimientos()
-// baja_productos()
+// done, not tested, descarga_productos()
+// done, not tested, descarga_movimientos()
+// done, not tested, baja_productos()
 
 
 class sprmkt {
@@ -242,10 +242,31 @@ class sprmkt {
 
 
         void descarga_productos() {
+            currentP= headP;
+            ofstream archp;
+            while(currentP != NULL){
+
+                for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == ' ') currentP->nom[i] ='_';
+                for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == ' ') currentP->fam[i] ='_';
+                for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == ' ') currentP->um[i] ='_';
+                archp <<currentP->cveP<<" "<<currentP->nom<<" "<<currentP->fam<<" "<<currentP->um<<" "<<currentP->pu<<" "<<currentP->ei<<" "<<currentP->ea<<" "<<currentP->smin<<" "<<currentP->smax<<"\n";
+                currentP = currentP->nextP; 
+
+            }
+            archp.close();
+
         }
 
         void descarga_movimientos() {
+            currentM= headM;
+            ofstream archm;
+            while(currentM != NULL){
 
+                archm <<currentM->cveM<<" "<<currentM->fecha<<" "<<currentM->cant<<" "<<currentM->tipo<<" "<<currentM->stipo<<"\n";
+                currentM = currentM->nextM; 
+
+            }
+            archm.close();
         }
         void alta_productos() {
 
@@ -255,7 +276,7 @@ class sprmkt {
 
             while (flag) {
                 
-                if (!busca_producto()) show_error( (char *) "La clave del producto se duplica en la base de datos.");
+                if (busca_producto()) show_error( (char *) "La clave del producto se duplica en la base de datos.");
     
                 else if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
 
@@ -351,12 +372,15 @@ class sprmkt {
                 if ((smax < 1) || (smax > 999999)) show_error( (char *) "El Stock Max. es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
+                
             }
+            printf("pass 1"); //pasa este
             //// Pointers 
             nwP = new NodoP;
             nwP -> nextP = NULL;
             tailP -> nextP = nwP;
             nwP -> prevP = tailP;
+            printf("pass 2"); //no llega a este
 
             //// INT Atributtes
             nwP -> cveP = cveP;
@@ -373,9 +397,76 @@ class sprmkt {
              
             tailP = nwP;
 
-            descarga_productos();
-            descarga_movimientos();
+            //descarga_productos();
+            //descarga_movimientos();
+            
+        }
 
+        void baja_productosO(){
+            // cveP validation
+            
+            int num_bajas;
+            
+
+            
+            
+            if (!busca_producto()) {
+                show_error( (char *) "La clave del producto no existe.");
+                
+            }
+            
+            else{
+                elimina_movimiento(currentP->cveP);
+                if (currentP==headP){
+                    if (headP==tailP){
+                        headP=NULL;
+                        tailP=NULL;
+                        delete(currentP);
+                    }
+                    else{
+                        currentP=headP;
+                        headP=headP->nextP;
+                        headP->prevP=NULL;
+                        
+                        delete(currentP);
+                    }
+			    }
+
+                else{
+                    if (currentP==tailP) {
+                        if (headP==tailP){
+                            headP=NULL;
+                            tailP=NULL;
+                            delete(currentP);
+                        }
+                        else{
+                            currentP=tailP;
+                            tailP=currentP->prevP;
+                            tailP->nextP=NULL;
+                            delete(currentP);
+                        }
+                        
+                    }
+
+                    else{
+                        currentP->prevP->nextP = currentP->nextP;
+                        currentP->nextP->prevP = currentP->prevP;
+                        delete(currentP);
+                    }                   
+
+                }
+            }
+
+    
+
+
+
+
+
+
+               
+                    
+            
         }
         
         void show_error(char *mssg) {
@@ -402,6 +493,81 @@ class sprmkt {
             return false;
         }
 
+        void elimina_movimiento(int cvem) {
+            // Searches for cveM in linked list, eliminates the nodeM
+            
+            currentM = headM;
+            NodoM *aux;
+            while (currentM != NULL) {
+
+                
+
+                if (cvem== currentM->cveM){
+
+                    if(currentM == headM){
+
+                        if(headM== tailM){
+                            headM = NULL;
+                            tailM = NULL;
+                            delete currentM;
+                        }
+
+                        else{
+                            currentM->nextM=headM;
+                            currentM->nextM->prevM = NULL;
+                            aux=currentM; 
+                            delete currentM;
+                            currentM=aux->nextM;
+                            delete aux;
+
+                        }
+                        
+                        
+
+                    }
+                    else{
+                        if(currentM == tailM){
+
+                            if(headM== tailM){
+                            headM = NULL;
+                            tailM = NULL;
+                            delete currentM;
+                            }
+
+                            else{
+                                currentM->prevM=tailM;
+                                currentM->prevM->nextM= NULL;
+                                aux=currentM; 
+                                delete currentM;
+                                currentM=aux->nextM;
+                                delete aux;
+
+                            }
+
+                        }
+                        else{
+                            currentM->nextM->prevM = currentM->prevM;
+                            currentM->prevM->nextM = currentM->nextM;
+                            aux=currentM; 
+                            delete currentM;
+                            currentM=aux->nextM;
+                            delete aux; 
+                        }
+                      
+                    }
+
+
+
+                }
+                else{
+                    lastM=currentM;
+                    currentM = currentM -> nextM;
+
+                }
+                
+            }
+            
+        }
 };
 
 int main() {
