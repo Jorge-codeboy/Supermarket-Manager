@@ -445,13 +445,10 @@ class sprmkt {
         }
 
         void baja_productosO(){
-            // cveP validation
             
-            int num_bajas;
-            
+            ///int num_bajas;    
 
-            
-            
+
             if (!busca_producto()) {
                 show_error( (char *) "La clave del producto no existe.");
                 
@@ -459,6 +456,7 @@ class sprmkt {
             
             else{
                 elimina_movimiento(currentP->cveP);
+                
                 if (currentP==headP){
                     if (headP==tailP){
                         headP=NULL;
@@ -540,16 +538,15 @@ class sprmkt {
             // Searches for cveM in linked list, eliminates the nodeM
             
             currentM = headM;
-            NodoM *aux;
+            //NodoM *aux;
+
             while (currentM != NULL) {
 
-                
+                if (cvem == currentM->cveM){
 
-                if (cvem== currentM->cveM){
+                    if (currentM == headM){
 
-                    if(currentM == headM){
-
-                        if(headM== tailM){
+                        if (headM == tailM){
                             headM = NULL;
                             tailM = NULL;
                             delete currentM;
@@ -558,10 +555,12 @@ class sprmkt {
                         else{
                             currentM->nextM=headM;
                             currentM->nextM->prevM = NULL;
-                            aux=currentM; 
+                            //aux=currentM; 
                             delete currentM;
-                            currentM=aux->nextM;
-                            delete aux;
+                            
+                            
+                            //currentM=aux->nextM;
+                            //delete aux;
 
                         }
                         
@@ -580,10 +579,14 @@ class sprmkt {
                             else{
                                 currentM->prevM=tailM;
                                 currentM->prevM->nextM= NULL;
-                                aux=currentM; 
+                                //aux=currentM; 
                                 delete currentM;
-                                currentM=aux->nextM;
-                                delete aux;
+                                
+                                
+                                
+                                
+                                //currentM=aux->nextM;
+                                //delete aux;
 
                             }
 
@@ -591,10 +594,13 @@ class sprmkt {
                         else{
                             currentM->nextM->prevM = currentM->prevM;
                             currentM->prevM->nextM = currentM->nextM;
-                            aux=currentM; 
+                            //aux=currentM; 
                             delete currentM;
-                            currentM=aux->nextM;
-                            delete aux; 
+                            
+                            
+                            
+                            //currentM=aux->nextM;
+                            //delete aux; 
                         }
                       
                     }
