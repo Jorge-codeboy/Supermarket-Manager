@@ -254,14 +254,6 @@ class sprmkt {
             ofstream archP;
             archP.open("productos.txt", ios::out);
 
-            // Date definition!
-            time_t rawtime;
-            struct tm * timeinfo;
-            time (&rawtime);
-            timeinfo = localtime (&rawtime);
-
-            strftime(fecha, 10, "%D%T", timeinfo);
-            puts(fecha);
 
             currentP = headP;
 
@@ -441,8 +433,8 @@ class sprmkt {
                 tailP = nwP;
             }
 
-            descarga_productos();
-            descarga_movimientos();
+            //descarga_productos();
+            //descarga_movimientos();
             
         }
 
@@ -525,22 +517,22 @@ class sprmkt {
         bool busca_producto() {
             // Searches for cveP in linked list, returns a bool depending on the search
 
-            if (headP == NULL) {
+            /*if (headP == NULL) {
                 show_error("LISTA EMPTY [ENTER]\n");
+            }*/
+            
+
+            printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
+
+
+            currentP = headP;
+
+            while (currentP != NULL) {
+
+                if (cveP == currentP->cveP) return true;
+                currentP = currentP -> nextP;
             }
-            else {
-
-                printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
-
-
-                currentP = headP;
-
-                while (currentP != NULL) {
-
-                    if (cveP == currentP->cveP) return true;
-                    currentP = currentP -> nextP;
-                }
-            }
+        
             return false;
         }
 
