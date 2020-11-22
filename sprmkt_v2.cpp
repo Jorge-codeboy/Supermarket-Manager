@@ -92,7 +92,8 @@ class sprmkt {
                 switch(op){
                     case 'a': alta_productos(); break;
                     case 'b': baja_productos(); break;
-                    case 'c': if (!busca_atributo("ConsultaCveP")) show_error("La clave pudo ser localizada"); break;
+                    case 'c': if (!busca_atributo("ConsultaCveP")) show_error("La clave NO pudo ser localizada"); break;
+                    case 'd': if (!busca_atributo("ConsultaFamP")) show_error("La familia NO pudo ser localizada"); break;
                     case 'x': menuP(); break;
 
                     default: show_error("Opcion No Valida");
@@ -533,6 +534,7 @@ class sprmkt {
 
         bool busca_atributo(char *op) {
             // Searches for op in Productos Linked List, returns a bool depending on the search
+            bool encontrado = false;
 
             // 1. Defines currentP
             currentP = headP;
@@ -544,48 +546,83 @@ class sprmkt {
                 printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
 
             }
+
+            if ((strcmp(op, "ConsultaFamP") == 0)) {
+
+                printf("Indica la familia a consultar -> "); gets(fam);
+                for(int i=0;i<(strlen(fam));i++) if (fam[i] == ' ') fam[i] ='_';
+
+                printf("\n\n");
+                printf("             FAMILIA | CLAVE |               NOMBRE |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                 printf("-------------------------------------------------------------------------------------------------------------------------\n");
+
+            }
             
             // 3. Loops through Productos Linked List
             while (currentP != NULL) {
             
-            // 4. Checks for attributes based on op
-            if ((strcmp(op, "BuscaCveP") == 0)) {
-                if (cveP == currentP->cveP) return true;
-            }
-            
-
-            if ((strcmp(op, "ConsultaCveP") == 0)) {
-                if (cveP == currentP->cveP) {
-
-
-                    // Changes _ for visualization
-                    for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
-                    for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
-                    for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';
-
-
-                    // Prints search results
-                    printf("\n\n");
-                    printf("Clave               : %d\n", currentP->cveP);
-                    printf("Nombre              : %s\n", currentP->nom);
-                    printf("Famila              : %s\n", currentP->fam);
-                    printf("Unidad de Medida    : %s\n", currentP->um);
-                    printf("Precio Unitario     : %d\n", currentP->pu);
-                    printf("Existencia Inicial  : %d\n", currentP->ei);
-                    printf("Existencia Actual   : %d\n", currentP->ea);
-                    printf("Stock M%cnimo        : %d\n", 161, currentP->smin);
-                    printf("Stock M%cximo        : %d\n", 160, currentP->smax);
-
-                    show_message("");
-                    return true;
+                // 4. Checks for attributes based on op
+                if ((strcmp(op, "BuscaCveP") == 0)) {
+                    if (cveP == currentP->cveP) return true;
                 }
+    
+                if ((strcmp(op, "ConsultaCveP") == 0)) {
+                    
+                    if (cveP == currentP->cveP) {
+
+
+                        // Changes _ for visualization
+                        for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
+                        for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
+                        for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';
+
+
+                        // Prints search results
+                        printf("\n\n");
+                        printf("Clave               : %d\n", currentP->cveP);
+                        printf("Nombre              : %s\n", currentP->nom);
+                        printf("Famila              : %s\n", currentP->fam);
+                        printf("Unidad de Medida    : %s\n", currentP->um);
+                        printf("Precio Unitario     : %d\n", currentP->pu);
+                        printf("Existencia Inicial  : %d\n", currentP->ei);
+                        printf("Existencia Actual   : %d\n", currentP->ea);
+                        printf("Stock M%cnimo        : %d\n", 161, currentP->smin);
+                        printf("Stock M%cximo        : %d\n", 160, currentP->smax);
+
+                        show_message("");
+                        return true;
+                    }
+                }
+                
+                if ((strcmp(op, "ConsultaFamP") == 0)) {
+
+                   
+                    
+                    if ((strcmp(fam, currentP->fam) == 0)) {
+
+
+                        // Changes _ for visualization
+                        for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
+                        for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
+                        for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';
+
+
+                        // Prints search results
+                        
+                        printf("%20s | %5d | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->fam, currentP->cveP, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                        printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                        
+                        encontrado = true;
+                    }
+                }
+                currentP = currentP -> nextP;
             }
+            show_message("La busqueda ha terminado");
             // 5. Iterates
-            currentP = currentP -> nextP;
             
-            }
-            // 6. Returns false if search was not successful
-            return false;
+            // 6. Returns results
+            return encontrado;
         }
 
         void elimina_movimiento(int cvem) {
