@@ -92,8 +92,8 @@ class sprmkt {
                 switch(op){
                     case 'a': alta_productos(); break;
                     case 'b': baja_productos(); break;
-                    case 'c': if (!busca_atributo("ConsultaCveP")) show_error("La clave NO pudo ser localizada"); break;
-                    case 'd': if (!busca_atributo("ConsultaFamP")) show_error("La familia NO pudo ser localizada"); break;
+                    case 'c': if (!busca_atributo_P("ConsultaCveP")) show_error("La clave NO pudo ser localizada"); break;
+                    case 'd': if (!busca_atributo_P("ConsultaFamP")) show_error("La familia NO pudo ser localizada"); break;
                     case 'x': menuP(); break;
 
                     default: show_error("Opcion No Valida");
@@ -306,7 +306,7 @@ class sprmkt {
 
             while (flag) {
                 
-                if (busca_atributo("BuscaCveP")) show_error( (char *) "La clave del producto se duplica en la base de datos.");
+                if (busca_atributo_P("BuscaCveP")) show_error( (char *) "La clave del producto se duplica en la base de datos.");
     
                 else if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
 
@@ -452,7 +452,7 @@ class sprmkt {
             ///int num_bajas;    
 
 
-            if (!busca_atributo("BuscaCveP")) {
+            if (!busca_atributo_P("BuscaCveP")) {
                 show_error( (char *) "La clave del producto no existe.");
                 
             }
@@ -532,7 +532,7 @@ class sprmkt {
             getchar(); fflush(stdin);
         }
 
-        bool busca_atributo(char *op) {
+        bool busca_atributo_P(char *op) {
             // Searches for op in Productos Linked List, returns a bool depending on the search
             bool encontrado = false;
 
