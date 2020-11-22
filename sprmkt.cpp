@@ -301,9 +301,15 @@ class sprmkt {
                 
                 if (busca_producto()) show_error( (char *) "La clave del producto se duplica en la base de datos.");
     
-                else if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
+                else{
+                    if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
 
-                else flag = false;
+                    else flag = false;
+
+                }
+                 
+
+                
             }
 
             // nombre validation!
@@ -311,7 +317,7 @@ class sprmkt {
 
             while (flag) {
                 
-                printf("Indica Nombre del producto -> "); gets(nom);
+                printf("Indica Nombre del producto -> "); fgets(nom,21,stdin);
                 int l = strlen(nom);
                 
                 if ((l < 1) || (l > 20)) show_error( (char *) "El Nombre debe tener entre 1 y 20 caracteres.");
@@ -324,7 +330,7 @@ class sprmkt {
 
             while (flag) {
                 
-                printf("Indica Familia del producto -> "); gets(fam);
+                printf("Indica Familia del producto -> "); fgets(fam,21,stdin);
                 int l = strlen(fam);
                 
                 if ((l < 1) || (l > 20)) show_error( (char *) "La Familia debe tener entre 1 y 20 caracteres.");
@@ -337,7 +343,7 @@ class sprmkt {
 
             while (flag) {
                 
-                printf("Indica Unidad de Medida del producto -> "); gets(um);
+                printf("Indica Unidad de Medida del producto -> "); fgets(um,21,stdin);
                 int l = strlen(um);
                 
                 if ((l < 1) || (l > 20)) show_error( (char *) "El Unidad de Medida debe tener entre 1 y 20 caracteres.");
@@ -418,20 +424,24 @@ class sprmkt {
             
             // Case 1: List is empty
             if ((headP == NULL) || (tailP == NULL)) {
+                printf("this shit empty");
                 headP = nwP;
                 tailP = nwP;
-                headP -> nextP = NULL;
-                headP -> prevP = NULL;
-                tailP -> nextP = NULL;
-                tailP -> prevP = NULL;
+                headP->nextP = NULL;
+                headP->prevP = NULL;
+                tailP->nextP = NULL;
+                tailP->prevP = NULL;
             }
             
             // Case 2: List is NOT empty
             else {
-                tailP -> nextP = nwP;
-                nwP -> prevP = tailP;
-                tailP = nwP;
+                printf("not empy");
+                tailP->nextP = nwP;
+                nwP->prevP = tailP;
+                tailP=nwP;
             }
+
+            delete nwP;
 
             //descarga_productos();
             //descarga_movimientos();

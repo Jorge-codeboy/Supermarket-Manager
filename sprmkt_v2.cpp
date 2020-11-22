@@ -3,7 +3,7 @@
 #include <String.h>
 #include <ctype.h> // tolower()
 #include <fstream>
-#include <ctime>
+#include <time.h>
 
 using namespace std;
 
@@ -46,7 +46,8 @@ struct NodoP {
 struct NodoM {
     NodoM *prevM, *nextM;
     int cveM, cant;
-    char fecha[11], tipo[2], stipo[2];
+    char fecha[11];
+    char tipo, stipo;
 };
 
 
@@ -58,7 +59,8 @@ int cveP, pu, ei, ea, smin, smax;
 char nom[21], fam[21], um[21];
 ///////////////////// Movimientos
 int cveM, cant;
-char fecha[11], tipo[2], stipo[2];
+char fecha[11];
+char tipo, stipo;
 ///////////////////// Apuntadores
 NodoP *nwP, *headP, *tailP, *currentP;
 NodoM *nwM, *headM, *tailM, *currentM, *lastM;
@@ -121,9 +123,11 @@ class sprmkt {
                 printf("-----------------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
-                    case 'a':printf("aaaaaa"); getchar(); break;
-                    //case 'b':muestra(); break;
-                    //case 'c':promedio(1); break;
+                    case 'a':dec_movimiento(1); break;
+                    case 'b':dec_movimiento(2); break;
+                    case 'c':dec_movimiento(3); break;
+                    case 'd':dec_movimiento(4); break;
+                    case 'e':dec_movimiento(5); break;
                     case 'x': menuP(); break;
                     default: show_error("Opcion No Valida");
                 }
@@ -236,8 +240,8 @@ class sprmkt {
                 nwM->cveM = cveM;
                 strcpy(nwM->fecha, fecha);
                 nwM->cant = cant;
-                strcpy(nwM->tipo, tipo);
-                strcpy(nwM->stipo, stipo);
+                nwM->tipo= tipo;
+                (nwM->stipo= stipo);
                 
                 nwM->nextM = NULL;
                 nwM->prevM = NULL;
@@ -260,10 +264,17 @@ class sprmkt {
             
             ofstream archP;
             archP.open("productos.txt", ios::out);
-
+            
+            //printf( "pre currentP->cve : %d \n",currentP->cveP);
+            //printf( "pre headP currentP->cve : %d \n",headP->cveP);
             currentP = headP;
+            //int times =1;
+            //printf( "currentP->cve : %d \n",currentP->cveP);
+            
 
             while(currentP != NULL){
+                //printf("got in %d \n",times);
+                //times = times+1;
 
                 for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == ' ') currentP->nom[i] ='_';
                 for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == ' ') currentP->fam[i] ='_';
@@ -281,15 +292,11 @@ class sprmkt {
             ofstream archM;
             archM.open("movimientos.txt", ios::out);
 
-            // Date definition!
-            time_t now = time(0);
-            char *localt = ctime(&now);
-            strcpy(fecha,localt);
-            printf("%s\n", fecha);
+            
+
 
             while(currentM != NULL){
-                for(int i=0;i<(strlen(currentM->tipo));i++) if (currentM->tipo[i] == ' ') currentM->tipo[i] ='_';
-                for(int i=0;i<(strlen(currentM->stipo));i++) if (currentM->stipo[i] == ' ') currentM->stipo[i] ='_';
+
                 for(int i=0;i<(strlen(currentM->fecha));i++) if (currentM->fecha[i] == ' ') currentM->fecha[i] ='_';
                 archM << currentM->cveM <<" "<<currentM->fecha<<" "<<currentM->cant<<" "<<currentM->tipo<<" "<<currentM->stipo<<"\n";
                 currentM = currentM->nextM; 
@@ -501,7 +508,7 @@ class sprmkt {
             }
 
             descarga_productos();
-            // descarga_movimientos();
+            descarga_movimientos();
 
     
 
@@ -629,29 +636,29 @@ class sprmkt {
             // Searches for cveM in linked list, eliminates the nodeM
             
             currentM = headM;
-            //NodoM *aux;
+            NodoM *aux;
 
             while (currentM != NULL) {
 
                 if (cvem == currentM->cveM){
 
                     if (currentM == headM){
-
+                        // cas if one node exists
                         if (headM == tailM){
                             headM = NULL;
                             tailM = NULL;
                             delete currentM;
+                            currentM=NULL;
                         }
 
                         else{
-                            currentM->nextM=headM;
+                            headM=currentM->nextM;
                             currentM->nextM->prevM = NULL;
-                            //aux=currentM; 
-                            delete currentM;
+                            delete(currentM);
+                            currentM=headM;
                             
                             
-                            //currentM=aux->nextM;
-                            //delete aux;
+
 
                         }
                         
@@ -665,19 +672,14 @@ class sprmkt {
                             headM = NULL;
                             tailM = NULL;
                             delete currentM;
+                            currentM=NULL;
                             }
 
                             else{
-                                currentM->prevM=tailM;
+                                tailM=currentM->prevM;
                                 currentM->prevM->nextM= NULL;
-                                //aux=currentM; 
-                                delete currentM;
-                                
-                                
-                                
-                                
-                                //currentM=aux->nextM;
-                                //delete aux;
+                                delete(currentM);
+                                currentM=tailM;
 
                             }
 
@@ -685,13 +687,13 @@ class sprmkt {
                         else{
                             currentM->nextM->prevM = currentM->prevM;
                             currentM->prevM->nextM = currentM->nextM;
-                            //aux=currentM; 
+                            aux=currentM; 
                             delete currentM;
                             
                             
                             
-                            //currentM=aux->nextM;
-                            //delete aux; 
+                            currentM=aux->nextM;
+                            delete aux; 
                         }
                       
                     }
@@ -700,7 +702,7 @@ class sprmkt {
 
                 }
                 else{
-                    lastM=currentM;
+                    
                     currentM = currentM -> nextM;
 
                 }
@@ -709,9 +711,114 @@ class sprmkt {
             
         }
 
+        void alta_movimiento(int entradasc,int cveM,char *fecha, char tipo, char stipo){
+            
+
+            currentP->ea = currentP->ea + entradasc;
+            descarga_productos();
+            
+            
+            
+            
+            nwM = new NodoM;
+
+            //// INT Atributtes
+            nwM -> cveM = cveM;
+
+            nwM -> cant = (-1)*entradasc;
+
+            
+            
+            //// STR Atributtes
+            nwM -> tipo= tipo;
+            nwM -> stipo=stipo;
+            strcpy(nwM -> fecha,fecha);
+            
+            //// Pointers
+            nwM -> nextM = NULL;
+            nwM -> prevM = NULL;
+            
+            // Case 1: List is empty
+            if (headM == NULL)  {
+                headM = nwM;
+                tailM = nwM;
+
+                headM -> nextM = NULL;
+                headM -> prevM = NULL;
+                tailM -> nextM = NULL;
+                tailM -> prevM = NULL;
+            }
+            
+            // Case 2: List is NOT emMty
+            else {
+                tailM -> nextM = nwM;
+                nwM -> prevM = tailM;
+                tailM = nwM;
+            }
+
+            descarga_movimientos();
+
+
+        }
+
+        void obtiene_fecha() {
+            time_t tiempo;
+            struct tm *tm;
+            
+
+            tiempo = time (NULL);
+            tm = localtime(&tiempo);
+            strftime(fecha, 11, "%d/%m/%Y", tm);
+            
+        }
+
+
+        void dec_movimiento(int tipo){
+            
+            if(!busca_atributo_P("BuscaCveP")){
+                show_error("La clave NO pudo ser localizada");
+                
+            } 
+            
+
+            else{
+
+                
+                int entradasc;
+                printf("Indica cuantas unidades : "); scanf("%d",&entradasc); gets(falso);
+                
+                
+
+                
+                
+
+                obtiene_fecha();
+                
+
+
+                
+                
+                switch(tipo){
+                    case 1: alta_movimiento(entradasc,currentP->cveP,fecha,'E','C'); break;
+                    case 2: alta_movimiento(entradasc,currentP->cveP,fecha,'E','D'); break;
+                    case 3: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','V'); break;
+                    case 4: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','P'); break;
+                    case 5: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','P'); break;
+                }
+
+
+
+                
+            }
+        }
+
+    
+
 
 
 };
+
+
 
 int main() {
 
