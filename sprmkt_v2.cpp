@@ -66,9 +66,9 @@ NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++ TO DO +++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// done, not tested, descarga_productos()
-// done, not tested, descarga_movimientos()
-// done, not tested, baja_productos()
+// done, tested, descarga_productos()
+// done, NOT tested, descarga_movimientos()
+// done, tested, baja_productos()
 
 
 class sprmkt {
@@ -92,9 +92,11 @@ class sprmkt {
                 op = tolower( (int) op);
                 switch(op){
                     case 'a': alta_productos(); break;
-                    //case 'b':muestra(); break;
+                    case 'b':baja_productos(); break;
                     //case 'c':promedio(1); break;
                     case 'x': menuP(); break;
+
+                    default: show_error("Opcion No Valida");
                     
                 }
             }while(op !='x');        
@@ -123,6 +125,7 @@ class sprmkt {
                     //case 'b':muestra(); break;
                     //case 'c':promedio(1); break;
                     case 'x': menuP(); break;
+                    default: show_error("Opcion No Valida");
                 }
             }while(op!='x');        
         }    
@@ -150,12 +153,11 @@ class sprmkt {
                 switch(op){
                     case 'a':printf("aaaaaa"); getchar(); break;
                     //case 'b':muestra(); break;
-                    //case 'c':promedio(1); break;
-                    
+                    case 'x': menuP(); break;
+                    default: show_error("Opcion No Valida");
                 }
             }while(op!='x');        
         }
-
 
         void menuP(){
             
@@ -181,6 +183,7 @@ class sprmkt {
                     case 'b':menuES(); break;
                     case 'c':menuReportes(); break;
                     case 'x':exit(0); break;
+                    default: show_error("Opcion No Valida");
                 }
                         
             } while(op!='x');
@@ -253,7 +256,6 @@ class sprmkt {
             archM.close();
         }
 
-
         void descarga_productos() {
             
             ofstream archP;
@@ -295,6 +297,7 @@ class sprmkt {
             }
             archM.close();
         }
+        
         void alta_productos() {
 
 
@@ -444,7 +447,7 @@ class sprmkt {
             
         }
 
-        void baja_productosO(){
+        void baja_productos(){
             
             ///int num_bajas;    
 
@@ -496,6 +499,9 @@ class sprmkt {
 
                 }
             }
+
+            descarga_productos();
+            // descarga_movimientos();
 
     
 
