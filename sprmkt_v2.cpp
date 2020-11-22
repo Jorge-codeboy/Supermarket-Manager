@@ -4,6 +4,7 @@
 #include <ctype.h> // tolower()
 #include <fstream>
 #include <time.h>
+#include <assert.h>
 
 using namespace std;
 
@@ -68,10 +69,10 @@ NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++ TO DO +++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// done, tested, descarga_productos()
-// done, NOT tested, descarga_movimientos()
+
+
 // casting for pu needed
-// la celebración ha terminado eliminar
+
 // casting forzado de cve
 
 
@@ -379,6 +380,7 @@ class sprmkt {
             while (flag) {
 
                 printf("Indica el Precio Unitario del producto -> "); scanf("%d", &pu); gets(falso);
+                assert((float) pu);
                 if ((pu < 1) || (pu > 999999)) show_error( (char *) "El Precio Unitario es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
@@ -663,7 +665,7 @@ class sprmkt {
                 currentP = currentP -> nextP;
             
             }
-            if ((strcmp(fam, currentP->fam) == 0)) show_message("La busqueda ha terminado");
+            if ((strcmp(op, "ConsultaFamP") == 0)) show_message("La busqueda ha terminado");
             // 5. Iterates
             
             // 6. Returns results
