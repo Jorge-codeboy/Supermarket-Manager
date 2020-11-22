@@ -257,12 +257,18 @@ class sprmkt {
                 if (headM == NULL) {
                     headM = nwM;
                     tailM = nwM;
+                    headM -> nextM = NULL;
+                    headM -> prevM = NULL;
+                    tailM -> nextM = NULL;
+                    tailM -> prevM = NULL;
+
 
                 }
                 else {
                     tailM -> nextM = nwM;
                     nwM -> prevM = tailM;
                     tailM = nwM;
+                    nwM->nextM=NULL;
                 }
             }
             archM.close();
@@ -655,8 +661,9 @@ class sprmkt {
                     }
                 }
                 currentP = currentP -> nextP;
+            
             }
-            show_message("La busqueda ha terminado");
+            if ((strcmp(fam, currentP->fam) == 0)) show_message("La busqueda ha terminado");
             // 5. Iterates
             
             // 6. Returns results
@@ -718,6 +725,7 @@ class sprmkt {
                         else{
                             currentM->nextM->prevM = currentM->prevM;
                             currentM->prevM->nextM = currentM->nextM;
+                            
                             aux=currentM; 
                             delete currentM;
                             
@@ -952,7 +960,7 @@ class sprmkt {
                 
                     currentP=currentP->nextP;
                 }
-                currentP=currentP->nextP;
+                
 
 
             }
