@@ -2,4 +2,4 @@
 45 Tennis_Vapourfly Ropa_Caballeros Pares 2300 10 10 1 10
 86 Bonafont_Levite Bebidas Botellas 15 100 100 10 100
 99999 Pants_Nike Ropa_Mujer Piezas/Juego 600 20 20 1 25
-1 Pan_Bimbo Cereales Bolsa 40 40 40 10 50
+1 Pan_Bimbo Cereales Bolsa 40 40 40 10 500

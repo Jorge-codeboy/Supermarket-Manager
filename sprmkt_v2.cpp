@@ -68,7 +68,6 @@ NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // done, tested, descarga_productos()
 // done, NOT tested, descarga_movimientos()
-// done, tested, baja_productos()
 
 
 class sprmkt {
@@ -92,8 +91,8 @@ class sprmkt {
                 op = tolower( (int) op);
                 switch(op){
                     case 'a': alta_productos(); break;
-                    case 'b':baja_productos(); break;
-                    //case 'c':promedio(1); break;
+                    case 'b': baja_productos(); break;
+                    case 'c': if (!busca_atributo("ConsultaCveP")) show_error("La clave pudo ser localizada"); break;
                     case 'x': menuP(); break;
 
                     default: show_error("Opcion No Valida");
@@ -306,7 +305,7 @@ class sprmkt {
 
             while (flag) {
                 
-                if (busca_producto()) show_error( (char *) "La clave del producto se duplica en la base de datos.");
+                if (busca_atributo("BuscaCveP")) show_error( (char *) "La clave del producto se duplica en la base de datos.");
     
                 else if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
 
@@ -452,7 +451,7 @@ class sprmkt {
             ///int num_bajas;    
 
 
-            if (!busca_producto()) {
+            if (!busca_atributo("BuscaCveP")) {
                 show_error( (char *) "La clave del producto no existe.");
                 
             }
@@ -524,19 +523,68 @@ class sprmkt {
             getchar(); fflush(stdin);
         }
 
-        bool busca_producto() {
-            // Searches for cveP in linked list, returns a bool depending on the search
+        void show_message(char *mssg) {
+            printf("\n");
+            printf("%s\n", mssg);
+            printf("[ENTER] para continuar ...");
+            printf("\n");
+            getchar(); fflush(stdin);
+        }
 
-            printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
+        bool busca_atributo(char *op) {
+            // Searches for op in Productos Linked List, returns a bool depending on the search
 
-
+            // 1. Defines currentP
             currentP = headP;
 
-            while (currentP != NULL) {
+            // 2. Asks for attribute to search based on op
 
-                if (cveP == currentP->cveP) return true;
-                currentP = currentP -> nextP;
+            if ((strcmp(op, "BuscaCveP") == 0) || (strcmp(op, "ConsultaCveP") == 0)) {
+
+                printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
+
             }
+            
+            // 3. Loops through Productos Linked List
+            while (currentP != NULL) {
+            
+            // 4. Checks for attributes based on op
+            if ((strcmp(op, "BuscaCveP") == 0)) {
+                if (cveP == currentP->cveP) return true;
+            }
+            
+
+            if ((strcmp(op, "ConsultaCveP") == 0)) {
+                if (cveP == currentP->cveP) {
+
+
+                    // Changes _ for visualization
+                    for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
+                    for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
+                    for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';
+
+
+                    // Prints search results
+                    printf("\n\n");
+                    printf("Clave               : %d\n", currentP->cveP);
+                    printf("Nombre              : %s\n", currentP->nom);
+                    printf("Famila              : %s\n", currentP->fam);
+                    printf("Unidad de Medida    : %s\n", currentP->um);
+                    printf("Precio Unitario     : %d\n", currentP->pu);
+                    printf("Existencia Inicial  : %d\n", currentP->ei);
+                    printf("Existencia Actual   : %d\n", currentP->ea);
+                    printf("Stock M%cnimo        : %d\n", 161, currentP->smin);
+                    printf("Stock M%cximo        : %d\n", 160, currentP->smax);
+
+                    show_message("");
+                    return true;
+                }
+            }
+            // 5. Iterates
+            currentP = currentP -> nextP;
+            
+            }
+            // 6. Returns false if search was not successful
             return false;
         }
 
@@ -623,6 +671,9 @@ class sprmkt {
             }
             
         }
+
+
+
 };
 
 int main() {
