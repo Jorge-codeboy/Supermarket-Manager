@@ -70,6 +70,9 @@ NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // done, tested, descarga_productos()
 // done, NOT tested, descarga_movimientos()
+// casting for pu needed
+// la celebración ha terminado eliminar
+// casting forzado de cve
 
 
 class sprmkt {
@@ -155,8 +158,12 @@ class sprmkt {
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
-                    case 'a':printf("aaaaaa"); getchar(); break;
-                    //case 'b':muestra(); break;
+                    case 'a':ordenarp(1); break;
+                    case 'b':ordenarp(2); break;
+                    case 'c': if (!busca_atributo_P("ConsultaFamP")) show_error("La familia NO pudo ser localizada"); break;
+                    case 'd':ordenarp(3); break;
+                    case 'e':ordenarp(4); break;
+                    case 'f':listadomf(); break;
                     case 'x': menuP(); break;
                     default: show_error("Opcion No Valida");
                 }
@@ -165,7 +172,7 @@ class sprmkt {
 
         void menuP(){
             
-            carga_archivos();
+            
 
             char op;
             
@@ -228,6 +235,7 @@ class sprmkt {
                     tailP -> nextP = nwP;
                     nwP -> prevP = tailP;
                     tailP = nwP;
+                    nwP->nextP=NULL;
                 }
             }
             archP.close();
@@ -447,6 +455,7 @@ class sprmkt {
                 tailP -> nextP = nwP;
                 nwP -> prevP = tailP;
                 tailP = nwP;
+                nwP->nextP=NULL;
             }
 
             descarga_productos();
@@ -548,7 +557,7 @@ class sprmkt {
 
             // 2. Asks for attribute to search based on op
 
-            if ((strcmp(op, "BuscaCveP") == 0) || (strcmp(op, "ConsultaCveP") == 0)) {
+            if ((strcmp(op, "BuscaCveP") == 0) || (strcmp(op, "ConsultaCveP") == 0) || (strcmp(op, "ConsultaCvePM") ==0 )) {
 
                 printf("Indica la clave del producto -> "); scanf("%d", &cveP); gets(falso);
 
@@ -601,6 +610,28 @@ class sprmkt {
                         return true;
                     }
                 }
+
+
+                if ((strcmp(op, "ConsultaCvePM") == 0)) {
+                    
+                    if (cveP == currentP->cveP) {
+
+
+                        // Changes _ for visualization
+                        for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
+                        for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
+                        for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';
+
+
+                        // Prints search results
+                        printf("\n\n");
+                        printf("Clave               : %d\n", currentP->cveP);
+                        printf("Nombre              : %s\n", currentP->nom);
+                        printf("Famila              : %s\n", currentP->fam);
+                        
+                        return(true);
+                    }
+                }                
                 
                 if ((strcmp(op, "ConsultaFamP") == 0)) {
 
@@ -813,9 +844,153 @@ class sprmkt {
         }
 
     
+    void ordenarp(int op){
+
+        NodoP *currentPi, *currentPj, *auxP;
+
+        currentPi = headP;
+        auxP= new NodoP;
+        while(currentPi != NULL){
+            currentPj=currentPi->nextP;
+            while(currentPj != NULL){
+                if(op == 1 && (currentPi->cveP > currentPj->cveP) || \
+                (op ==2 && (strcmp(currentPi->nom,currentPj->nom)==1)) || \
+                (op == 3 && (currentPi->ea > currentPj->ea) && currentPi->ea <= currentPi->smin && currentPj->ea <= currentPj->smin) ||\
+                (op== 4 && (currentPi->ea > currentPj->ea) && currentPi->ea >= currentPi->smax && currentPj->ea >= currentPj->smax)) {
+
+                    auxP->cveP=currentPi->cveP;
+                    strcpy(auxP->nom,currentPi->nom);
+                    strcpy(auxP->fam,currentPi->fam);
+                    strcpy(auxP->um,currentPi->um);
+                    auxP->pu=currentPi->pu;
+                    auxP->ei=currentPi->ei;                    
+                    auxP->ea=currentPi->ea;
+                    auxP->smin=currentPi->smin;
+                    auxP->smax=currentPi->smax;
+                    
+
+
+                    //---------------------------------------------
+                    currentPi->cveP=currentPj->cveP;
+                    strcpy(currentPi->nom,currentPj->nom);
+                    strcpy(currentPi->fam,currentPj->fam);
+                    strcpy(currentPi->um,currentPj->um);
+                    currentPi->pu=currentPj->pu;
+                    currentPi->ei=currentPj->ei;                    
+                    currentPi->ea=currentPj->ea;
+                    currentPi->smin=currentPj->smin;
+                    currentPi->smax=currentPj->smax;
+	
+                    //-----------------------------------------------
+                    currentPj->cveP=auxP->cveP;
+                    strcpy(currentPj->nom,auxP->nom);
+                    strcpy(currentPj->fam,auxP->fam);
+                    strcpy(currentPj->um,auxP->um);
+                    currentPj->pu=auxP->pu;
+                    currentPj->ei=auxP->ei;                    
+                    currentPj->ea=auxP->ea;
+                    currentPj->smin=auxP->smin;
+                    currentPj->smax=auxP->smax;
 
 
 
+
+                }
+                currentPj=currentPj->nextP;
+            }
+            currentPi=currentPi->nextP;
+        }
+
+        listado_generalP(op);
+
+
+
+    }
+
+
+
+
+    void listado_generalP(int op){
+
+        if (headP==NULL){
+            show_error("La lista esta vacia");
+        }
+        else{
+            currentP=headP;
+            printf("\n\n");
+            printf("CLAVE |              FAMILIA |               NOMBRE |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
+            printf("-------------------------------------------------------------------------------------------------------------------------\n");
+            printf("-------------------------------------------------------------------------------------------------------------------------\n");
+
+            while(currentP!=NULL){
+                for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
+                for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
+                for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';                
+                if( (op==3) && (currentP->ea <= currentP->smin)){
+                    
+                    printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                    printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                    currentP=currentP->nextP;
+                    continue;                   
+                }
+
+
+
+                else if((op==4) && (currentP->ea >= currentP->smax)){
+                    printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                    printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                    currentP=currentP->nextP;
+                    continue; 
+
+                }
+
+                else if((op!=3) && (op!=4)){
+
+                    printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                    printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                    
+                
+                    currentP=currentP->nextP;
+                }
+                currentP=currentP->nextP;
+
+
+            }
+        }
+        show_message("");
+ 
+ 
+    }
+
+
+    void listadomf(){
+        if (!busca_atributo_P("ConsultaCvePM")) show_error("La clave NO pudo ser localizada");
+
+      
+        currentM=headM;
+        printf("\n\n");
+        printf("FECHA      |   CANTIDAD | ENTRADA/SALIDA | SUB TIPO |\n");
+        printf("-------------------------------------------------------------------------------------------------------------------------\n");
+        printf("-------------------------------------------------------------------------------------------------------------------------\n"); 
+
+        
+
+        while(currentM!=NULL){
+            if(currentM->cveM == currentP->cveP){
+                printf("%10s | %6d     |              %c |    %c \n", currentM->fecha, currentM->cant,  currentM->tipo, currentM->stipo);
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+
+            }
+
+            
+            
+        
+            currentM=currentM->nextM;
+        }
+        show_message("");   
+
+
+    }
 };
 
 
@@ -833,6 +1008,7 @@ int main() {
 
 ///////////////////////////// Starts the program  
     sprmkt start;
+    start.carga_archivos();
     start.menuP();
     return 0;
 }

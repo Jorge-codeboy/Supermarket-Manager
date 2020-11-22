@@ -1,1 +1,1 @@
-urrentM = currentM -> nextM;
+= nwP
