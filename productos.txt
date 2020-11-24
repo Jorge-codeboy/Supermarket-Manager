@@ -1,11 +1,7 @@
-1 pan_bimbo pan bolsa 20 50 90 10 100
-2 hojas papeleria paquete 100 200 200 20 400
-3 lentes ojos par 300 400 400 100 700
 4 hongos alucinogenos gr 500 200 200 100 600
 5 poio familia_poio kg 1 1 1 1 1
 45 tele papas trozo 234 200 200 200 200
-12 popocha eces_fecales kg 300 300 300 300 300
-0 misa religion pureza 1 2 2 2 2
-0 sdfasf sdf sdf 1 2 2 2 2
-0 trop vop pop 1 2 2 2 2
-0 dfs sdf sdf 1 2 2 2 2
+1 pan_bimbo pan bolsa 20 50 590 10 100
+2 hojas papeleria paquete 100 200 200 20 400
+3 lentes papeleria par 300 400 400 100 700
+12 popocha eces_fecales kg 300 300 1 300 300

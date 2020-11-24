@@ -4,7 +4,7 @@
 #include <ctype.h> // tolower()
 #include <fstream>
 #include <time.h>
-#include <assert.h>
+#include <Windows.h>
 
 using namespace std;
 
@@ -55,6 +55,10 @@ struct NodoM {
 ///////////////////////////////// Global Variables
 char falso[2];
 bool flag;
+////////////////////////////////////////////// GUI
+int color = 11;
+int dcolor = 15;
+HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 /////////////////////// Productos
 int cveP, pu, ei, ea, smin, smax;
 char nom[21], fam[21], um[21];
@@ -78,10 +82,28 @@ NodoM *nwM, *headM, *tailM, *currentM, *lastM;
 
 class sprmkt {
     public:
+
+        void color_text() {
+            if (color == 11) {
+                SetConsoleTextAttribute(h, 2); color = 2;
+            }
+            else {
+                SetConsoleTextAttribute(h, 11); color = 11;
+            }
+
+        }
+
+        void specific_color(int c) {
+            SetConsoleTextAttribute(h, c);
+            
+        }
         void menuArchivosP() {
             char op;
             
             do{
+                // GUI
+                specific_color(15);
+                
                 printf("\n\n");
                 printf("---------------------------------------------------\n");
                 printf("--------------MENU ARCHIVO DE PRODUCTOS------------\n");
@@ -110,8 +132,12 @@ class sprmkt {
 
         void menuES(){
             char op;
+
             
             do{
+                // GUI
+                specific_color(15);
+
                 printf("\n\n");
                 printf("------------------------------------------------------------\n");
                 printf("--------------MENU ENTRADAS/SALIDAS DE PRODUCTOS------------\n");
@@ -143,6 +169,9 @@ class sprmkt {
             char op;
             
             do{
+                // GUI
+                specific_color(15);
+
                 printf("\n\n");
                 printf("---------------------------------------------------\n");
                 printf("--------------MENU REPORTES------------------------\n");
@@ -159,11 +188,11 @@ class sprmkt {
                 printf("---------------------------------------------------\n");
                 op = tolower( (int) op);
                 switch(op){
-                    case 'a':ordenarp(1); break;
-                    case 'b':ordenarp(2); break;
+                    case 'a':ordenaP(1); break;
+                    case 'b':ordenaP(2); break;
                     case 'c': if (!busca_atributo_P("ConsultaFamP")) show_error("La familia NO pudo ser localizada"); break;
-                    case 'd':ordenarp(3); break;
-                    case 'e':ordenarp(4); break;
+                    case 'd':ordenaP(3); break;
+                    case 'e':ordenaP(4); break;
                     case 'f':listadomf(); break;
                     case 'x': menuP(); break;
                     default: show_error("Opcion No Valida");
@@ -328,9 +357,9 @@ class sprmkt {
 
             while (flag) {
                 
-                if (busca_atributo_P("BuscaCveP")) show_error( (char *) "La clave del producto se duplica en la base de datos.");
+                if (busca_atributo_P("BuscaCveP")) show_error( (const char *) "La clave del producto se duplica en la base de datos.");
     
-                else if ((cveP < 1) || (cveP > 99999)) show_error( (char *) "La clave del producto es mayor a 99,999 o menor a 1.");
+                else if ((cveP < 1) || (cveP > 99999)) show_error( (const char *) "La clave del producto es mayor a 99,999 o menor a 1.");
 
                 else flag = false;
             }
@@ -343,7 +372,7 @@ class sprmkt {
                 printf("Indica Nombre del producto -> "); gets(nom);
                 int l = strlen(nom);
                 
-                if ((l < 1) || (l > 20)) show_error( (char *) "El Nombre debe tener entre 1 y 20 caracteres.");
+                if ((l < 1) || (l > 20)) show_error( (const char *) "El Nombre debe tener entre 1 y 20 caracteres.");
 
                 else flag = false;
             }
@@ -356,7 +385,7 @@ class sprmkt {
                 printf("Indica Familia del producto -> "); gets(fam);
                 int l = strlen(fam);
                 
-                if ((l < 1) || (l > 20)) show_error( (char *) "La Familia debe tener entre 1 y 20 caracteres.");
+                if ((l < 1) || (l > 20)) show_error( (const char *) "La Familia debe tener entre 1 y 20 caracteres.");
 
                 else flag = false;
             }
@@ -369,7 +398,7 @@ class sprmkt {
                 printf("Indica Unidad de Medida del producto -> "); gets(um);
                 int l = strlen(um);
                 
-                if ((l < 1) || (l > 20)) show_error( (char *) "El Unidad de Medida debe tener entre 1 y 20 caracteres.");
+                if ((l < 1) || (l > 20)) show_error( (const char *) "El Unidad de Medida debe tener entre 1 y 20 caracteres.");
 
                 else flag = false;
             }
@@ -380,8 +409,7 @@ class sprmkt {
             while (flag) {
 
                 printf("Indica el Precio Unitario del producto -> "); scanf("%d", &pu); gets(falso);
-                assert((float) pu);
-                if ((pu < 1) || (pu > 999999)) show_error( (char *) "El Precio Unitario es mayor a 999,999 o menor a 1.");
+                if ((pu < 1) || (pu > 999999)) show_error( (const char *) "El Precio Unitario es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
             }
@@ -394,7 +422,7 @@ class sprmkt {
                 
                 printf("Indica la Existencia Inicial del producto -> "); scanf("%d", &ei); gets(falso);
 
-                if ((ei < 1) || (ei > 999999)) show_error( (char *) "La Existencia Inicial es mayor a 999,999 o menor a 1.");
+                if ((ei < 1) || (ei > 999999)) show_error( (const char *) "La Existencia Inicial es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
             }
@@ -410,7 +438,7 @@ class sprmkt {
                 
                 printf("Indica el Stock M%cnimo del producto -> ", 161); scanf("%d", &smin); gets(falso);
 
-                if ((smin < 1) || (smin > 999999)) show_error( (char *) "El Stock Min. es mayor a 999,999 o menor a 1.");
+                if ((smin < 1) || (smin > 999999)) show_error( (const char *) "El Stock Min. es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
             }
@@ -422,7 +450,7 @@ class sprmkt {
                 
                 printf("Indica el Stock M%cximo del producto -> ", 160); scanf("%d", &smax); gets(falso);
 
-                if ((smax < 1) || (smax > 999999)) show_error( (char *) "El Stock Max. es mayor a 999,999 o menor a 1.");
+                if ((smax < 1) || (smax > 999999)) show_error( (const char *) "El Stock Max. es mayor a 999,999 o menor a 1.");
 
                 else flag = false;
                 
@@ -477,7 +505,7 @@ class sprmkt {
 
 
             if (!busca_atributo_P("BuscaCveP")) {
-                show_error( (char *) "La clave del producto no existe.");
+                show_error( (const char *) "La clave del producto no existe.");
                 
             }
             
@@ -539,26 +567,34 @@ class sprmkt {
             
         }
         
-        void show_error(char *mssg) {
+        void show_error(const char *mssg) {
+
+            specific_color(4);
             printf("\n");
             printf("[ERROR] ");
             printf("%s\n", mssg);
             printf("[ENTER] para continuar ...");
             printf("\n");
             getchar(); fflush(stdin);
+            specific_color(15);
         }
 
-        void show_message(char *mssg) {
+        void show_message(const char *mssg) {
+            specific_color(14);
             printf("\n");
             printf("%s\n", mssg);
             printf("[ENTER] para continuar ...");
             printf("\n");
             getchar(); fflush(stdin);
+            specific_color(15);
         }
 
-        bool busca_atributo_P(char *op) {
+        bool busca_atributo_P(const char *op) {
+
             // Searches for op in Productos Linked List, returns a bool depending on the search
             bool encontrado = false;
+
+
 
             // 1. Defines currentP
             currentP = headP;
@@ -579,12 +615,14 @@ class sprmkt {
                 printf("\n\n");
                 printf("             FAMILIA | CLAVE |               NOMBRE |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
                 printf("-------------------------------------------------------------------------------------------------------------------------\n");
-                 printf("-------------------------------------------------------------------------------------------------------------------------\n");
-
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                
             }
             
             // 3. Loops through Productos Linked List
             while (currentP != NULL) {
+
+                color_text();
             
                 // 4. Checks for attributes based on op
                 if ((strcmp(op, "BuscaCveP") == 0)) {
@@ -642,11 +680,12 @@ class sprmkt {
                 }                
                 
                 if ((strcmp(op, "ConsultaFamP") == 0)) {
-
+                    
                    
                     
                     if ((strcmp(fam, currentP->fam) == 0)) {
-
+                        
+                        
 
                         // Changes _ for visualization
                         for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
@@ -665,7 +704,7 @@ class sprmkt {
                 currentP = currentP -> nextP;
             
             }
-            if ((strcmp(op, "ConsultaFamP") == 0)) show_message("La busqueda ha terminado");
+            if ((strcmp(op, "ConsultaFamP") == 0)) show_message("");
             // 5. Iterates
             
             // 6. Returns results
@@ -752,7 +791,7 @@ class sprmkt {
             
         }
 
-        void alta_movimiento(int entradasc,int cveM,char *fecha, char tipo, char stipo){
+        void alta_movimiento(int entradasc,int cveM,const char *fecha, char tipo, char stipo){
             
 
             currentP->ea = currentP->ea + entradasc;
@@ -824,19 +863,13 @@ class sprmkt {
 
             else{
 
-                
+                specific_color(15);
                 int entradasc;
                 printf("Indica cuantas unidades : "); scanf("%d",&entradasc); gets(falso);
                 
                 
 
-                
-                
-
                 obtiene_fecha();
-                
-
-
                 
                 
                 switch(tipo){
@@ -844,7 +877,7 @@ class sprmkt {
                     case 2: alta_movimiento(entradasc,currentP->cveP,fecha,'E','D'); break;
                     case 3: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','V'); break;
                     case 4: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','P'); break;
-                    case 5: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','P'); break;
+                    case 5: entradasc = (-1)*entradasc; alta_movimiento(entradasc,currentP->cveP,fecha,'S','M'); break;
                 }
 
 
@@ -854,7 +887,7 @@ class sprmkt {
         }
 
     
-    void ordenarp(int op){
+    void ordenaP(int op){
 
         NodoP *currentPi, *currentPj, *auxP;
 
@@ -865,8 +898,8 @@ class sprmkt {
             while(currentPj != NULL){
                 if(op == 1 && (currentPi->cveP > currentPj->cveP) || \
                 (op ==2 && (strcmp(currentPi->nom,currentPj->nom)==1)) || \
-                (op == 3 && (currentPi->ea > currentPj->ea) && currentPi->ea <= currentPi->smin && currentPj->ea <= currentPj->smin) ||\
-                (op== 4 && (currentPi->ea > currentPj->ea) && currentPi->ea >= currentPi->smax && currentPj->ea >= currentPj->smax)) {
+                (op == 3 && (currentPi->ea > currentPj->ea) && currentPi->ea <= currentPi->smin && currentPj->ea <= currentPj->smin) || \
+                (op == 4 && (currentPi->ea > currentPj->ea) && currentPi->ea >= currentPi->smax && currentPj->ea >= currentPj->smax)) {
 
                     auxP->cveP=currentPi->cveP;
                     strcpy(auxP->nom,currentPi->nom);
@@ -878,8 +911,6 @@ class sprmkt {
                     auxP->smin=currentPi->smin;
                     auxP->smax=currentPi->smax;
                     
-
-
                     //---------------------------------------------
                     currentPi->cveP=currentPj->cveP;
                     strcpy(currentPi->nom,currentPj->nom);
@@ -901,9 +932,6 @@ class sprmkt {
                     currentPj->ea=auxP->ea;
                     currentPj->smin=auxP->smin;
                     currentPj->smax=auxP->smax;
-
-
-
 
                 }
                 currentPj=currentPj->nextP;
@@ -927,18 +955,56 @@ class sprmkt {
         }
         else{
             currentP=headP;
-            printf("\n\n");
-            printf("CLAVE |              FAMILIA |               NOMBRE |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
-            printf("-------------------------------------------------------------------------------------------------------------------------\n");
-            printf("-------------------------------------------------------------------------------------------------------------------------\n");
+
+            if (op == 1) {
+                printf("\n\n");
+                printf("CLAVE |              FAMILIA |               NOMBRE |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+            }
+
+            else if (op == 2) {
+                printf("\n\n");
+                printf("              NOMBRE | CLAVE |              FAMILIA |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+            }
+            
 
             while(currentP!=NULL){
                 for(int i=0;i<(strlen(currentP->nom));i++) if (currentP->nom[i] == '_') currentP->nom[i] =' ';
                 for(int i=0;i<(strlen(currentP->fam));i++) if (currentP->fam[i] == '_') currentP->fam[i] =' ';
-                for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';                
-                if( (op==3) && (currentP->ea <= currentP->smin)){
+                for(int i=0;i<(strlen(currentP->um));i++) if (currentP->um[i] == '_') currentP->um[i] =' ';
+
+
+                if (op == 1) {  
+                    
+                    // GUI 
+                    color_text();
                     
                     printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                    printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                    currentP=currentP->nextP;
+                    continue;                   
+                } 
+
+                if (op == 2) {
+
+                    // GUI 
+                    color_text();
+                    
+                    printf("%20s | %5d | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->nom, currentP->cveP, currentP->fam, currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                    printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                    currentP=currentP->nextP;
+                    continue;                   
+                }       
+                
+                if( (op==3) && (currentP->ea <= currentP->smin)){
+
+                    // GUI 
+                    color_text();
+                    
+                    printf("%d | %3d | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
                     printf("-------------------------------------------------------------------------------------------------------------------------\n");
                     currentP=currentP->nextP;
                     continue;                   
@@ -947,6 +1013,10 @@ class sprmkt {
 
 
                 else if((op==4) && (currentP->ea >= currentP->smax)){
+
+                    // GUI 
+                    color_text();
+
                     printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
                     printf("-------------------------------------------------------------------------------------------------------------------------\n");
                     currentP=currentP->nextP;
@@ -955,6 +1025,9 @@ class sprmkt {
                 }
 
                 else if((op!=3) && (op!=4)){
+
+                    // GUI 
+                    color_text();
 
                     printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
                     printf("-------------------------------------------------------------------------------------------------------------------------\n");
@@ -976,31 +1049,44 @@ class sprmkt {
     void listadomf(){
         if (!busca_atributo_P("ConsultaCvePM")) show_error("La clave NO pudo ser localizada");
 
-      
+        else {
+        
         currentM=headM;
+
+        // GUI
+        specific_color(15);
+
         printf("\n\n");
-        printf("FECHA      |   CANTIDAD | ENTRADA/SALIDA | SUB TIPO |\n");
+        printf("     FECHA |   CANTIDAD | ENTRADA/SALIDA | SUB TIPO |\n");
         printf("-------------------------------------------------------------------------------------------------------------------------\n");
         printf("-------------------------------------------------------------------------------------------------------------------------\n"); 
 
         
 
         while(currentM!=NULL){
+
+            
+
             if(currentM->cveM == currentP->cveP){
-                printf("%10s | %6d     |              %c |    %c \n", currentM->fecha, currentM->cant,  currentM->tipo, currentM->stipo);
+                // GUI
+                color_text();
+
+                printf("%10s |     %6d |              %c |        %c \n", currentM->fecha, currentM->cant,  currentM->tipo, currentM->stipo);
                 printf("-------------------------------------------------------------------------------------------------------------------------\n");
 
             }
-
             
-            
-        
             currentM=currentM->nextM;
         }
         show_message("");   
 
 
     }
+
+
+
+        }
+        
 };
 
 
