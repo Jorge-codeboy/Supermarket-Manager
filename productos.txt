@@ -1,5 +1,5 @@
-5 poio familia_poio kg 1 1 9 1 1
-12 popocha eces_fecales kg 300 300 1 300 300
-2 hojas papeleria paquete 100 200 200 20 400
-3 lentes papeleria par 300 400 404 100 700
+2 hojas Comestibles paquete 100 200 200 20 400
 1 pan_bimbo pan bolsa 20 50 599 10 100
+99999 Galletas_Animalito Comestibles Bolsa 20 30 64 15 60
+8 12345678901234567890 12345678901234567890 12345678901234567890 999999 999999 999999 1 999999
+19 Jorge_en_Tarta Pasteleria Kilometros 10000 10 10 999999 999999
