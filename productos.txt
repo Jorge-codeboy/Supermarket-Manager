@@ -1,5 +1,5 @@
-5 poio familia_poio kg 1 1 1 1 1
+5 poio familia_poio kg 1 1 9 1 1
 12 popocha eces_fecales kg 300 300 1 300 300
 2 hojas papeleria paquete 100 200 200 20 400
-3 lentes papeleria par 300 400 400 100 700
-1 pan_bimbo pan bolsa 20 50 600 10 100
+3 lentes papeleria par 300 400 404 100 700
+1 pan_bimbo pan bolsa 20 50 599 10 100

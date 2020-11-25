@@ -800,8 +800,12 @@ class sprmkt {
 
             //// INT Atributtes
             nwM -> cveM = cveM;
+            if(tipo == 'S') nwM -> cant = (-1)*entradasc;
+            
+            else nwM -> cant = entradasc;
 
-            nwM -> cant = (-1)*entradasc;
+            
+            
 
             
             
