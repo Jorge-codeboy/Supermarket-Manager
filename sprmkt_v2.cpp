@@ -768,12 +768,8 @@ class sprmkt {
                             currentM->prevM->nextM = currentM->nextM;
                             
                             aux=currentM; 
-                            delete currentM;
-                            
-                            
-                            
                             currentM=aux->nextM;
-                            delete aux; 
+                            delete aux;
                         }
                       
                     }
@@ -956,19 +952,22 @@ class sprmkt {
         else{
             currentP=headP;
 
-            if (op == 1) {
+
+            if (op == 2) {
+                printf("\n\n");
+                printf("              NOMBRE | CLAVE |              FAMILIA |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+                printf("-------------------------------------------------------------------------------------------------------------------------\n");
+            }
+
+            else {
                 printf("\n\n");
                 printf("CLAVE |              FAMILIA |               NOMBRE |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
                 printf("-------------------------------------------------------------------------------------------------------------------------\n");
                 printf("-------------------------------------------------------------------------------------------------------------------------\n");
             }
 
-            else if (op == 2) {
-                printf("\n\n");
-                printf("              NOMBRE | CLAVE |              FAMILIA |                   UM |     PU |     EI |     EA |   SMIN |   SMAX |\n");
-                printf("-------------------------------------------------------------------------------------------------------------------------\n");
-                printf("-------------------------------------------------------------------------------------------------------------------------\n");
-            }
+            
             
 
             while(currentP!=NULL){
@@ -1004,7 +1003,7 @@ class sprmkt {
                     // GUI 
                     color_text();
                     
-                    printf("%d | %3d | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
+                    printf("%5d | %20s | %20s | %20s | %6d | %6d | %6d | %6d | %6d \n", currentP->cveP, currentP->fam, currentP->nom,  currentP->um, currentP->pu, currentP->ei, currentP->ea, currentP->smin, currentP->smax);
                     printf("-------------------------------------------------------------------------------------------------------------------------\n");
                     currentP=currentP->nextP;
                     continue;                   
@@ -1035,7 +1034,9 @@ class sprmkt {
                 
                     currentP=currentP->nextP;
                 }
-                
+                else {
+                    currentP=currentP->nextP;
+                }
 
 
             }
